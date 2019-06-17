@@ -6,7 +6,7 @@ const Modal = ({children, onClose, open}) =>
     ? ReactDOM.createPortal(
         <div className="modal">
           <div className="modal-close" onClick={onClose}>
-            X
+            <button>&#10006;</button>
           </div>
           {children}
         </div>,

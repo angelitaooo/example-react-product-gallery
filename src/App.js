@@ -39,7 +39,7 @@ class App extends Component {
       products,
     });
     console.log(categories);
-    console.log(products[2]);
+    console.log(products[2].images.medium);
   }
 
   getProductCategory = async id => {
@@ -52,7 +52,13 @@ class App extends Component {
   toggleModal = id => {
     this.setState({
       showModal: !this.state.showModal,
-      product: this.state.products[id - 1].name,
+      product: this.state.products[id - 1],
+    });
+  };
+
+  onClose = () => {
+    this.setState({
+      showModal: !this.state.showModal,
     });
   };
 
@@ -69,8 +75,12 @@ class App extends Component {
             products={this.state.products}
             onToggleModal={this.toggleModal}
           />
-          <Modal open={this.state.showModal} onClose={this.toggleModal}>
-            {this.state.product}
+          <Modal open={this.state.showModal} onClose={this.onClose}>
+            <div className="modal-item-detail">
+              <h3>{this.state.product.name}</h3>
+              <p>{this.state.product.description}</p>
+              <p>${this.state.product.price}</p>
+            </div>
           </Modal>
         </section>
       </div>
