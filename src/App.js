@@ -39,7 +39,7 @@ class App extends Component {
       products,
     });
     console.log(categories);
-    console.log(products[2].images.medium);
+    console.log(products);
   }
 
   getProductCategory = async id => {
@@ -62,15 +62,37 @@ class App extends Component {
     });
   };
 
+  filterByMinPrice = () => {
+    const min = this.state.products.sort(function(a, b) {
+      const min = a.price;
+      const max = b.price;
+      return min - max;
+    });
+    this.setState({products: min});
+  };
+
+  filterByMaxPrice = () => {
+    const max = this.state.products.sort(function(a, b) {
+      const min = a.price;
+      const max = b.price;
+      return max - min;
+    });
+    this.setState({products: max});
+  };
+
   render() {
     return (
       <div className="App">
         <section className="main-content">
-          <CategoryList
-            getCategoryList={this.getProductCategory}
-            categories={this.state.categories}
-            showActiveCategory={this.state.activeCategory}
-          />
+          <div>
+            <CategoryList
+              getCategoryList={this.getProductCategory}
+              categories={this.state.categories}
+              showActiveCategory={this.state.activeCategory}
+            />
+            <button onClick={this.filterByMinPrice}>Min</button>
+            <button onClick={this.filterByMaxPrice}>Max</button>
+          </div>
           <CardList
             products={this.state.products}
             onToggleModal={this.toggleModal}
