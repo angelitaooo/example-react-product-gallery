@@ -4,6 +4,7 @@ import * as requests from './requests';
 import CardList from './components/CardList';
 import CategoryList from './components/CategoryList';
 import Modal from './components/Modal';
+import SearchBar from './components/SearchBar';
 // export default function App() {
 //   // Here as an example to get you started with requests.js
 //   React.useEffect(() => {
@@ -26,6 +27,7 @@ class App extends Component {
     activeCategory: 0,
     showModal: false,
     product: '',
+    searchInput: '',
   };
 
   async componentDidMount() {
@@ -80,9 +82,24 @@ class App extends Component {
     this.setState({products: max});
   };
 
+  onSearchChange = e => {
+    const text = e.target.value;
+    this.setState({
+      searchInput: text, //aqui se guarda en el estado (en esta variable) lo que se escribe en el input
+    });
+  };
+
   render() {
+    //se filtran los productos (this.state.products) por el texto que se ha guardado en this.state.searchInput
+    const filteredProducts = this.state.products.filter(product => {
+      return product.name
+        .toLowerCase()
+        .includes(this.state.searchInput.toLowerCase());
+    });
+    console.log('filter', filteredProducts);
     return (
       <div className="App">
+        <SearchBar searchChange={this.onSearchChange} />
         <section className="main-content">
           <div>
             <CategoryList
@@ -94,7 +111,7 @@ class App extends Component {
             <button onClick={this.filterByMaxPrice}>Max</button>
           </div>
           <CardList
-            products={this.state.products}
+            products={filteredProducts} // en lugar de poner this.state.products, se ponen de una vez los productos y cuando se filtren se mostraran actualizados
             onToggleModal={this.toggleModal}
           />
           {this.state.product.length !== 0 && (
