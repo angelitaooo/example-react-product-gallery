@@ -33,10 +33,10 @@ class App extends Component {
     const products = await requests.getProducts({
       categoryId: categories[0].id,
     });
-    const product = await requests.getProduct(products[0].id);
     this.setState({
       categories,
       products,
+      activeCategory: categories[0].id,
     });
     console.log(categories);
     console.log(products);
@@ -63,7 +63,7 @@ class App extends Component {
   };
 
   filterByMinPrice = () => {
-    const min = this.state.products.sort(function(a, b) {
+    const min = [...this.state.products].sort(function(a, b) {
       const min = a.price;
       const max = b.price;
       return min - max;
@@ -72,7 +72,7 @@ class App extends Component {
   };
 
   filterByMaxPrice = () => {
-    const max = this.state.products.sort(function(a, b) {
+    const max = [...this.state.products].sort(function(a, b) {
       const min = a.price;
       const max = b.price;
       return max - min;
@@ -97,13 +97,16 @@ class App extends Component {
             products={this.state.products}
             onToggleModal={this.toggleModal}
           />
-          <Modal open={this.state.showModal} onClose={this.onClose}>
-            <div className="modal-item-detail">
-              <h3>{this.state.product.name}</h3>
-              <p>{this.state.product.description}</p>
-              <p>${this.state.product.price}</p>
-            </div>
-          </Modal>
+          {this.state.product.length !== 0 && (
+            <Modal open={this.state.showModal} onClose={this.onClose}>
+              <div className="modal-item-detail">
+                <img src={this.state.product.images.medium} />
+                <h3>{this.state.product.name}</h3>
+                <p>{this.state.product.description}</p>
+                <p>${this.state.product.price}</p>
+              </div>
+            </Modal>
+          )}
         </section>
       </div>
     );
