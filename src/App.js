@@ -5,6 +5,8 @@ import CardList from './components/CardList';
 import CategoryList from './components/CategoryList';
 import Modal from './components/Modal';
 import SearchBar from './components/SearchBar';
+import Cart from './components/Cart';
+
 // export default function App() {
 //   // Here as an example to get you started with requests.js
 //   React.useEffect(() => {
@@ -28,6 +30,7 @@ class App extends Component {
     showModal: false,
     product: '',
     searchInput: '',
+    cart: [],
   };
 
   async componentDidMount() {
@@ -89,6 +92,14 @@ class App extends Component {
     });
   };
 
+  addProductToCart = id => {
+    const addProduct = this.state.products.filter(product => product.id === id);
+
+    this.setState({
+      cart: [...this.state.cart, ...addProduct], // se agrega el nuevo producto al array y no se usa push porque es mutable
+    });
+  };
+
   render() {
     //se filtran los productos (this.state.products) por el texto que se ha guardado en this.state.searchInput
     const filteredProducts = this.state.products.filter(product => {
@@ -113,7 +124,12 @@ class App extends Component {
           <CardList
             products={filteredProducts} // en lugar de poner this.state.products, se ponen de una vez los productos y cuando se filtren se mostraran actualizados
             onToggleModal={this.toggleModal}
+            addToCart={this.addProductToCart}
           />
+          {(this.state.cart.length === 0 && <h1>No items</h1>) || (
+            <Cart cartItem={this.state.cart} />
+          )}
+
           {this.state.product.length !== 0 && (
             <Modal open={this.state.showModal} onClose={this.onClose}>
               <div className="modal-item-detail">

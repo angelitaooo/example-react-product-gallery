@@ -15,6 +15,7 @@ class CardList extends Component {
               price={product.price}
               image={product.images.medium}
               onToggleModal={this.props.onToggleModal}
+              addToCart={this.props.addToCart}
             />
           ))}
         </div>
