@@ -115,7 +115,6 @@ class App extends Component {
           <div>
             <CategoryList
               getCategoryList={this.getProductCategory}
-              categories={this.state.categories}
               showActiveCategory={this.state.activeCategory}
             />
             <button onClick={this.filterByMinPrice}>Min</button>

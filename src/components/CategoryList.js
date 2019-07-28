@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 class CategoryList extends Component {
   render() {
@@ -23,4 +24,11 @@ class CategoryList extends Component {
   }
 }
 
-export default CategoryList;
+const mapStateToProps = state => {
+  console.log(state);
+  return {categories: state.categories};
+};
+export default connect(
+  mapStateToProps,
+  null
+)(CategoryList);
